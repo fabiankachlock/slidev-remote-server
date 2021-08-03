@@ -6,5 +6,18 @@
   "repository": "github.com/fabiankachlock/slidev-remote-server",
   "author": "Fabin Kachlock",
   "license": "MIT",
-  "private": false
+  "private": false,
+  "scripts": {
+    "format": "prettier --write 'src/**/*.ts' 'static/**/*.{ts,html,css}' 'types/**/*.d.ts'",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.{ts,html,css,d.ts}": "yarn format"
+  },
+  "devDependencies": {
+    "husky": "^7.0.1",
+    "lint-staged": "^11.1.1",
+    "prettier": "^2.3.2",
+    "typescript": "^4.3.5"
+  }
 }
