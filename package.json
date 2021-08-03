@@ -8,16 +8,30 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "format": "prettier --write 'src/**/*.ts' 'static/**/*.{ts,html,css}' 'types/**/*.d.ts'",
+    "run:server": "ts-node src/server/",
+    "dev": "nodemon --watch src/server --exec 'yarn run:server' -e ts",
+    "format": "prettier --write 'src/**/*.ts'",
     "prepare": "husky install"
   },
   "lint-staged": {
     "*.{ts,html,css,d.ts}": "yarn format"
   },
   "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/fs-extra": "^9.0.12",
+    "@types/multer": "^1.4.7",
+    "@types/uuid": "^8.3.1",
     "husky": "^7.0.1",
     "lint-staged": "^11.1.1",
+    "nodemon": "^2.0.12",
     "prettier": "^2.3.2",
+    "ts-node": "^10.1.0",
     "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "fs-extra": "^10.0.0",
+    "multer": "^1.4.2",
+    "uuid": "^8.3.2"
   }
 }

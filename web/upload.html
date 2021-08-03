@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>File Upload Example</title>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/dropzone.css"
+		/>
+	</head>
+	<body>
+		<form
+			id="upload-widget"
+			method="post"
+			enctype="multipart/form-data"
+			action=""
+			class="dropzone"
+		>
+			<div class="fallback">
+				<input type="file" name="file" />
+			</div>
+			<div class="form-group pull-right">
+				<button id="batch-upload" type="submit" class="btn btn-danger">
+					Upload Now!
+				</button>
+			</div>
+		</form>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+		<script>
+			Dropzone.options.uploadWidget = {
+				url: '/api/upload',
+				autoProcessQueue: false,
+				uploadMultiple: true,
+				parallelUploads: 4, // default is 2
+				maxFilesize: 50, // MB
+				paramName: n => 'upload-files',
+
+				init: function () {
+					var myDropzone = this;
+					this.on('completemultiple', function (files, response) {
+						// was queuecomplete
+						console.log('Complete!');
+						// Now reload page...
+						window.location.reload(true); // true => force server reload
+						console.log('Reloaded?');
+					});
+
+					this.on('addedfile', function () {
+						console.log('Added File! - show the upload button');
+					});
+
+					document.getElementById('batch-upload').onclick = e => {
+						console.log('Clicked on upload button'); // , e.target.href
+						e.preventDefault();
+						e.stopPropagation();
+						myDropzone.processQueue();
+					};
+
+					// $('#batch-upload').click( function(e) {
+					//   console.log("Clicked on upload button"); // , e.target.href
+
+					//   e.preventDefault();
+					//   e.stopPropagation();
+
+					//   myDropzone.processQueue();
+					// }).hide();
+				}
+			};
+		</script>
+	</body>
+</html>
