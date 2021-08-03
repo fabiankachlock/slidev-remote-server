@@ -1,0 +1,10 @@
+{
+  "name": "slidev-remote-server",
+  "version": "1.0.0",
+  "description": "Easily present you slidev slides remotly!",
+  "main": "index.js",
+  "repository": "github.com/fabiankachlock/slidev-remote-server",
+  "author": "Fabin Kachlock",
+  "license": "MIT",
+  "private": false
+}
