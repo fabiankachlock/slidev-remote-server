@@ -3,6 +3,7 @@ import multer from 'multer';
 import fs from 'fs-extra';
 import path from 'path';
 import { v4 as uuid } from 'uuid';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 // import sanitize from 'sanitize-filename';
 
 const server = express();
@@ -48,6 +49,15 @@ app.post('/upload', fileUpload.array('upload-files'), (req, res) => {
 });
 
 server.use('/api', app);
+
+server.use(
+  '/',
+  createProxyMiddleware({
+    target: 'http://localhost:3000',
+    changeOrigin: true,
+    ws: true
+  })
+);
 
 server.use(express.static('web'));
 
