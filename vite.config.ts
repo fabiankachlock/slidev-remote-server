@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue';
 export default defineConfig({
   root: 'web',
   plugins: [vue()],
+  clearScreen: false,
   build: {
     outDir: '../dist/frontend'
   }

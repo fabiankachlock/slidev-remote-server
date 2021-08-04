@@ -8,10 +8,10 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "// Server":"",
+    "// Server": "",
     "run:server": "ts-node --project tsconfig.server.json src",
     "build:server": "tsc -p tsconfig.server.json",
-    "// Frontend":"",
+    "// Frontend": "",
     "build:vue": "vue-tsc --noEmit && vite build --emptyOutDir",
     "serve:vue": "vite preview",
     "// Composition": "",
@@ -51,6 +51,6 @@
     "uuid": "^8.3.2",
     "vue": "^3.0.5",
     "vue-router": "^3.5.2",
-    "vuex": "^3.6.2"
+    "vuex": "^4.0.2"
   }
 }
