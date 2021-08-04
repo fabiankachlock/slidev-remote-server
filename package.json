@@ -19,7 +19,7 @@
     "build": "yarn build:vue && yarn build:server",
     "prod": "NODE_ENV=production node dist/server/index.js",
     "// Misc": "",
-    "format": "prettier --write 'src/**/*.ts'",
+    "format": "prettier --write 'src/**/*.ts' 'web/**/*.{ts,vue,html,css,d.ts}'",
     "prepare": "husky install"
   },
   "lint-staged": {
