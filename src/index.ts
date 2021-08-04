@@ -49,15 +49,24 @@ app.post('/upload', fileUpload.array('upload-files'), (req, res) => {
 });
 
 server.use('/api', app);
+console.log();
 
-server.use(
-  '/',
-  createProxyMiddleware({
-    target: 'http://localhost:3000',
-    changeOrigin: true,
-    ws: true
-  })
-);
+if (process.env.NODE_ENV !== 'production') {
+  server.use(
+    '/',
+    createProxyMiddleware({
+      target: 'http://localhost:3000',
+      changeOrigin: true,
+      ws: true
+    })
+  );
+} else {
+  server.use(express.static('dist/frontend'));
+
+  server.use((_req, res, _next) => {
+    res.sendFile('dist/frontend/index.html');
+  });
+}
 
 server.use(express.static('web'));
 

@@ -5,17 +5,18 @@
     "moduleResolution": "node",
     "strict": true,
     "jsx": "preserve",
-    "outDir": "dist/frontend",
-    "rootDir": "src/frontend",
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "lib": ["esnext", "dom"]
   },
   "include": [
-    "src/frontend/**/*.ts",
-    "src/frontend/**/*.d.ts",
-    "src/frontend/**/*.tsx",
-    "src/frontend/**/*.vue"
+    "web/**/*.ts",
+    "web/**/*.d.ts",
+    "web/**/*.tsx",
+    "web/**/*.vue"
+  ],
+  "exclude": [
+    "src"
   ]
 }
