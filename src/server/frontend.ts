@@ -1,9 +1,10 @@
 import express from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
+import { isDev } from '../util';
 
 export const FrontendRouter = express.Router();
 
-if (process.env.NODE_ENV !== 'production') {
+if (isDev) {
   FrontendRouter.use(
     '/',
     createProxyMiddleware({
