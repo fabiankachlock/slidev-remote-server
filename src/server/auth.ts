@@ -1,81 +1,95 @@
 import express, { RequestHandler } from 'express';
-import passport from 'passport';
+import fetch from 'node-fetch';
 import session from 'express-session';
-import GitHubStrategy from 'passport-github2';
-import type { VerifyFunction } from 'passport-oauth2';
 
 require('dotenv').config();
 
 export const AuthRouter = express.Router();
 
-AuthRouter.use(session({ secret: 'abc123', resave: false, saveUninitialized: false }));
-AuthRouter.use(passport.initialize());
-AuthRouter.use(passport.session());
+const { OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET, SESSION_SECRET } = process.env;
+
+AuthRouter.use(session({ secret: SESSION_SECRET, resave: false, saveUninitialized: false }));
 
 export const isAuthenticated: RequestHandler = (req, res, next) => {
-  if (req.isAuthenticated()) {
+  if (req.session && req.session.user && req.session.user.internalId in ['???']) {
     return next();
   }
   res.redirect('/notAuthendicated');
 };
 
-passport.serializeUser((user, done) => {
-  console.log('serializeUser', user);
-  done(null, user);
+AuthRouter.get('/test', isAuthenticated, (req, res) => {
+  res.send(`<h2>yo ${req.session.user?.email}</h2>`);
 });
 
-passport.deserializeUser((obj, done) => {
-  console.log('deserializeUser', obj);
-  // @ts-ignore
-  done(null, obj);
+const redirectURI = 'http://localhost:5000/auth/github/callback';
+AuthRouter.get('/login/github', (req, res) => {
+  res.redirect(`https://github.com/login/oauth/authorize?client_id=${OAUTH_CLIENT_ID}&redirect_uri=${redirectURI}&scope=user:email`);
 });
 
-// @ts-ignore
-const verifyFunction: VerifyFunction = (accessToken, refreshToken, profile, done) => {
-  // asynchronous verification, for effect...
-  console.log({ accessToken, refreshToken, profile });
-
-  // an example of how you might save a user
-  // new User({ username: profile.username }).fetch().then(user => {
-  //   if (!user) {
-  //     user = User.forge({ username: profile.username })
-  //   }
-  //
-  //   user.save({ profile: profile, access_token: accessToken }).then(() => {
-  //     return done(null, user)
-  //   })
-  // })
+const getAccessToken = async (code: string, client_id: string, client_secret: string): Promise<string> => {
+  const request = await fetch('https://github.com/login/oauth/access_token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      client_id,
+      client_secret,
+      code
+    })
+  });
+  const text = await request.text();
+  const params = new URLSearchParams(text);
+  return params.get('access_token') ?? 'no-code';
 };
 
-passport.use(
-  new GitHubStrategy.Strategy(
-    {
-      clientID: process.env.OAUTH_CLIENT_ID ?? '',
-      clientSecret: process.env.OAUTH_CLIENT_SECRET ?? '',
-      callbackURL: process.env.OAUTH_REDIRECT_URI ?? ''
-    },
-    verifyFunction
-  )
-);
+const fetchGitHubUser = async (token: string) => {
+  const request = await fetch('https://api.github.com/user', {
+    headers: {
+      Authorization: 'token ' + token
+    }
+  });
+  return await request.json();
+};
 
-AuthRouter.get('/test', isAuthenticated, (req, res) => {
-  res.send(`<h2>yo ${req.user}</h2>`);
-});
-
-AuthRouter.get('test');
-
-AuthRouter.get('/github', passport.authenticate('github', { scope: ['user:email'] }), (req, res) => {
-  console.log('after auth');
-});
-
-AuthRouter.get(
-  '/github/callback',
-  (req, res) => {
-    console.log('on callback');
-  },
-  passport.authenticate('github', { failureRedirect: '/authFailure' }),
-  (req, res) => {
-    console.log('after callback');
-    res.redirect('/');
+const fetchGithubUserEmail = async (token: string): Promise<string> => {
+  const request = await fetch('https://api.github.com/user/emails', {
+    headers: {
+      Authorization: 'token ' + token
+    }
+  });
+  const response = await request.json();
+  if (response && Array.isArray(response) && response.length > 0) {
+    return <string>response[0].email;
   }
-);
+  return '';
+};
+
+AuthRouter.get('/github/callback', async (req, res) => {
+  const code = <string>req.query['code'] || 'no-code';
+  const accessToken = await getAccessToken(code, OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET);
+  const user = await fetchGitHubUser(accessToken);
+  if (user) {
+    const email = await fetchGithubUserEmail(accessToken);
+    if (!req.session.user) {
+      // @ts-ignore
+      req.session.user = {};
+    }
+    if (req.session.user) {
+      req.session.user.email = email;
+      req.session.user.token = accessToken;
+      req.session.user.providerId = user.id;
+      req.session.user.provider = 'github';
+    }
+    console.log(req.session.user);
+    res.redirect('/loggedIn');
+  } else {
+    res.send('Login did not succeed!');
+  }
+});
+
+AuthRouter.get('/logout', (req, res) => {
+  // @ts-ignore
+  if (req.session) req.session = null;
+  res.redirect('/');
+});
