@@ -15,16 +15,20 @@ export class JSONSerializer implements Serializer {
         const index = entry.indexOf(':');
         const [key, value] = [entry.substring(0, index), entry.substring(index + 1, entry.length)];
 
-        if (key && value)
+        if (key)
           return {
             key,
-            value: JSON.parse(value)
+            value: value ? JSON.parse(value) : undefined
           };
         else return undefined;
       })
       .filter(e => e !== undefined)
       .reduce((prev, curr) => {
-        prev[curr?.key || 'no-index'] = curr?.value;
+        if (curr && curr.value) {
+          prev[curr?.key || 'no-index'] = curr?.value;
+        } else {
+          delete prev[curr?.key || 'no-index'];
+        }
         return prev;
       }, <DBData>{});
 }

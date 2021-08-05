@@ -1,95 +1,66 @@
 import express, { RequestHandler } from 'express';
-import fetch from 'node-fetch';
 import session from 'express-session';
+import { UserDB } from '../db/driver/users/UserDB';
+import { AuthProviders } from './auth/providers';
 
 require('dotenv').config();
 
 export const AuthRouter = express.Router();
 
-const { OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET, SESSION_SECRET } = process.env;
+const { SESSION_SECRET } = process.env;
 
-AuthRouter.use(session({ secret: SESSION_SECRET, resave: false, saveUninitialized: false }));
+AuthRouter.use(session({ secret: SESSION_SECRET, resave: false, saveUninitialized: false, cookie: { maxAge: 7776000 /* 90 Days */ } }));
 
 export const isAuthenticated: RequestHandler = (req, res, next) => {
-  if (req.session && req.session.user && req.session.user.internalId in ['???']) {
+  if (req.session && req.session.user && UserDB.userAuthorized(req.session.user.internalId)) {
     return next();
   }
   res.redirect('/notAuthendicated');
 };
 
-AuthRouter.get('/test', isAuthenticated, (req, res) => {
-  res.send(`<h2>yo ${req.session.user?.email}</h2>`);
-});
+for (const authProvider of AuthProviders) {
+  AuthRouter.get('/login/' + authProvider.name, authProvider.login);
 
-const redirectURI = 'http://localhost:5000/auth/github/callback';
-AuthRouter.get('/login/github', (req, res) => {
-  res.redirect(`https://github.com/login/oauth/authorize?client_id=${OAUTH_CLIENT_ID}&redirect_uri=${redirectURI}&scope=user:email`);
-});
+  AuthRouter.get('/' + authProvider.name + '/callback', async (req, res) => {
+    // store in db
+    const creds = await authProvider.handleCallback(req, res);
 
-const getAccessToken = async (code: string, client_id: string, client_secret: string): Promise<string> => {
-  const request = await fetch('https://github.com/login/oauth/access_token', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      client_id,
-      client_secret,
-      code
-    })
-  });
-  const text = await request.text();
-  const params = new URLSearchParams(text);
-  return params.get('access_token') ?? 'no-code';
-};
-
-const fetchGitHubUser = async (token: string) => {
-  const request = await fetch('https://api.github.com/user', {
-    headers: {
-      Authorization: 'token ' + token
+    if (!creds) {
+      res.redirect('/notAuthenticated');
+      return;
     }
-  });
-  return await request.json();
-};
 
-const fetchGithubUserEmail = async (token: string): Promise<string> => {
-  const request = await fetch('https://api.github.com/user/emails', {
-    headers: {
-      Authorization: 'token ' + token
+    if (!UserDB.userExists(creds.id)) {
+      UserDB.createUser(authProvider.name, creds.id, creds.email);
     }
-  });
-  const response = await request.json();
-  if (response && Array.isArray(response) && response.length > 0) {
-    return <string>response[0].email;
-  }
-  return '';
-};
+    const internalId = UserDB.loginWithGithub(creds.id, creds.token);
 
-AuthRouter.get('/github/callback', async (req, res) => {
-  const code = <string>req.query['code'] || 'no-code';
-  const accessToken = await getAccessToken(code, OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET);
-  const user = await fetchGitHubUser(accessToken);
-  if (user) {
-    const email = await fetchGithubUserEmail(accessToken);
+    // prepare session
+
     if (!req.session.user) {
       // @ts-ignore
       req.session.user = {};
     }
     if (req.session.user) {
-      req.session.user.email = email;
-      req.session.user.token = accessToken;
-      req.session.user.providerId = user.id;
-      req.session.user.provider = 'github';
+      req.session.user.email = creds.email;
+      req.session.user.token = creds.token;
+      req.session.user.providerId = creds.id;
+      req.session.user.provider = authProvider.name;
+      req.session.user.internalId = internalId;
     }
-    console.log(req.session.user);
     res.redirect('/loggedIn');
-  } else {
-    res.send('Login did not succeed!');
-  }
+  });
+}
+
+AuthRouter.get('/secret', isAuthenticated, async (req, res) => {
+  res.send('dont tell anybody!');
 });
 
 AuthRouter.get('/logout', (req, res) => {
-  // @ts-ignore
-  if (req.session) req.session = null;
+  if (req.session) {
+    UserDB.logout(req.session.user?.internalId || '');
+    // @ts-ignore
+    req.session = null;
+  }
   res.redirect('/');
 });

@@ -34,7 +34,16 @@ export class DB {
     return this.data;
   };
 
-  write = (data: DBData) => {
+  write = (id: string, data: any) => {
+    if (data === undefined) {
+      delete this.data[id];
+    } else {
+      this.data[id] = data;
+    }
+    this.stream.write(this.serializer.serialize(id, data));
+  };
+
+  writeBatch = (data: DBData) => {
     for (const [key, value] of Object.entries(data)) {
       this.data[key] = value;
       this.stream.write(this.serializer.serialize(key, value));

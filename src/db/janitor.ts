@@ -19,10 +19,14 @@ export class DBJanitor {
   private cleanUpCallBack = async () => {
     console.log('cleanup');
     for (const db of this.dbs) {
-      const content = await fs.readFile(db.fileName);
-      const data = db.serializer.deserialize(content.toString('utf-8'));
-      await fs.writeFile(db.fileName, db.serializer.serializeAll(data));
+      this.cleanUp(db);
     }
+  };
+
+  public cleanUp = async (db: DB) => {
+    const content = await fs.readFile(db.fileName);
+    const data = db.serializer.deserialize(content.toString('utf-8'));
+    await fs.writeFile(db.fileName, db.serializer.serializeAll(data));
   };
 
   public registerDatabase = (db: DB) => {
