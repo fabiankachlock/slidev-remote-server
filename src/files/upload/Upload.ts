@@ -10,7 +10,7 @@ export const FileUploader = {
     fs.mkdir(path.join(uploadDir, id));
 
     for (const file of files) {
-      console.log('Writing POSTed data :', file.originalname);
+      // console.log('Writing POSTed data :', file.originalname);
       // import sanitize from 'sanitize-filename';
       //var sanitized_filename = sanitize(file.originalname);
       const fileName = path.join(uploadDir, id, file.originalname);

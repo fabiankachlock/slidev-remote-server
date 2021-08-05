@@ -13,7 +13,13 @@ export class DBDriver<T extends DBData> {
   constructor(private options: DBDriverOptions) {
     this.db = new DB(options.fileName ?? options.name + '.db', undefined, new JSONSerializer());
     this.data = this.db.read();
+    DBJanitor.instance.registerDatabase(this.db);
   }
+
+  public shutdown = () => {
+    this.db.close();
+    DBJanitor.instance.deleteDatabase(this.db);
+  };
 
   protected create = (object: T): string => {
     const id = uuid();

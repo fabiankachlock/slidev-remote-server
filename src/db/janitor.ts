@@ -17,7 +17,7 @@ export class DBJanitor {
   }
 
   private cleanUpCallBack = async () => {
-    console.log('cleanup');
+    console.log('cleanup databases');
     for (const db of this.dbs) {
       this.cleanUp(db);
     }

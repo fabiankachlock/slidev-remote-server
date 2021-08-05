@@ -4,6 +4,8 @@ import { UserDBEntry } from './types';
 export class UserDB extends DBDriver<UserDBEntry> {
   private static db = new UserDB({ name: 'users', fileName: 'db/users.db' });
 
+  static shutdown = UserDB.db.shutdown;
+
   static userExists = (providerId: string) => UserDB.db.selectWhere(user => user.authInfo.providerId === providerId) !== undefined;
 
   static userAuthorized = (userId: string) => {
