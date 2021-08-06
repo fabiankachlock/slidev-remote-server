@@ -1,3 +1,5 @@
+/// <reference path="../express-session.d.ts" />
+
 import express, { RequestHandler } from 'express';
 import session from 'express-session';
 import { UserDB } from '../db/driver/users/UserDB';

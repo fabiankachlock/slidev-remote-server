@@ -17,6 +17,8 @@
     "web/**/*.vue"
   ],
   "exclude": [
-    "src"
+    "src",
+    "node_modules",
+    "dist"
   ]
 }
