@@ -17,7 +17,7 @@ export const isAuthenticated: RequestHandler = (req, res, next) => {
   if (req.session && req.session.user && UserDB.userAuthorized(req.session.user.internalId)) {
     return next();
   }
-  res.redirect('/notAuthendicated');
+  res.redirect('/notAuthenticated');
 };
 
 for (const authProvider of AuthProviders) {
@@ -50,13 +50,9 @@ for (const authProvider of AuthProviders) {
       req.session.user.provider = authProvider.name;
       req.session.user.internalId = internalId;
     }
-    res.redirect('/loggedIn');
+    res.redirect('/dashboard');
   });
 }
-
-AuthRouter.get('/secret', isAuthenticated, async (req, res) => {
-  res.send('dont tell anybody!');
-});
 
 AuthRouter.get('/logout', (req, res) => {
   if (req.session) {
