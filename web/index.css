@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	h1 {
+		@apply text-3xl;
+	}
+	h2 {
+		@apply text-2xl;
+	}
+	h3 {
+		@apply text-xl;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h6,
+	h6,
+	p,
+	span,
+	div,
+	a {
+		@apply font-sans;
+	}
+
+	body {
+		@apply bg-light-bg dark:bg-dark-bg text-gray-800 dark:text-gray-300;
+	}
+
+	.primary-text {
+		@apply text-gray-800 dark:text-gray-300;
+	}
+
+	.secondary-text {
+		@apply text-gray-600 dark:text-gray-500;
+	}
+
+	.dark-text {
+		@apply text-gray-800;
+	}
+}

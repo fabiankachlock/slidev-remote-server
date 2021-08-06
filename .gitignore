@@ -6,3 +6,4 @@ dist-ssr
 uploads
 .env
 *.db
+.vscode
