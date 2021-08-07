@@ -1,5 +1,5 @@
 <template>
-  <div class="w-screen h-screen grid grid-cols-1 auto-rows-min justify-center">
+  <div class="w-full grid grid-cols-1 auto-rows-min justify-center">
     <h1 class="text-center text-6xl italic text-primary m-20 mb-0 mt-60">slidev-remote-server</h1>
     <p class="text-center italic text-2xl my-10 mt-2">Present your slidev slides globally with an ease!</p>
     <div>
@@ -7,7 +7,7 @@
     </div>
     <div class="flex justify-center mx-auto">
       <div class="action">
-        <button type="button" class="btn border">
+        <button type="button" class="btn border border-gray-600 dark:border-gray-400">
           <router-link to="/guide">Get Started</router-link>
         </button>
       </div>

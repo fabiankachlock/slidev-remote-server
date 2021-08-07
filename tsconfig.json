@@ -13,8 +13,8 @@
   "include": [
     "web/**/*.ts",
     "web/**/*.d.ts",
-    "web/**/*.tsx",
-    "web/**/*.vue"
+    "web/**/*.vue",
+    "types"
   ],
   "exclude": [
     "src",

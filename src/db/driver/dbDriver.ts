@@ -72,6 +72,7 @@ export class DBDriver<T extends DBData> {
     for (const [key, value] of Object.entries(this.data)) {
       if (pred(value)) {
         this.update(key, object);
+        this.data = this.db.read();
         return true;
       }
     }
@@ -83,10 +84,10 @@ export class DBDriver<T extends DBData> {
     for (const [key, value] of Object.entries(this.data)) {
       if (pred(value)) {
         updates[key] = object;
-        this.data = this.db.read();
       }
     }
     this.db.writeBatch(updates);
+    this.data = this.db.read();
   };
 
   protected applyMutation = <B>(mutation: DBMutation<T, B>) => {

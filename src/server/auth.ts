@@ -1,17 +1,12 @@
 /// <reference path="../express-session.d.ts" />
 
 import express, { RequestHandler } from 'express';
-import session from 'express-session';
 import { UserDB } from '../db/driver/users/UserDB';
 import { AuthProviders } from './auth/providers';
 
 require('dotenv').config();
 
 export const AuthRouter = express.Router();
-
-const { SESSION_SECRET } = process.env;
-
-AuthRouter.use(session({ secret: SESSION_SECRET, resave: false, saveUninitialized: false, cookie: { maxAge: 7776000 /* 90 Days */ } }));
 
 export const isAuthenticated: RequestHandler = (req, res, next) => {
   if (req.session && req.session.user && UserDB.userAuthorized(req.session.user.internalId)) {
@@ -21,6 +16,7 @@ export const isAuthenticated: RequestHandler = (req, res, next) => {
 };
 
 for (const authProvider of AuthProviders) {
+  console.log('setup auth provider ' + authProvider.name);
   AuthRouter.get('/login/' + authProvider.name, authProvider.login);
 
   AuthRouter.get('/' + authProvider.name + '/callback', async (req, res) => {
@@ -56,6 +52,7 @@ for (const authProvider of AuthProviders) {
 
 AuthRouter.get('/logout', (req, res) => {
   if (req.session) {
+    console.log('logout');
     UserDB.logout(req.session.user?.internalId || '');
     // @ts-ignore
     req.session = null;

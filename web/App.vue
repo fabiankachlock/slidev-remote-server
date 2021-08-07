@@ -1,18 +1,12 @@
 <template>
-  <router-view />
+  <div class="min-w-full min-h-screen">
+    <NavBar />
+    <router-view />
+  </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'App',
-  methods: {
-    test() {
-      this.$router.push('/auth');
-    }
-  }
-});
+<script setup lang="ts">
+import NavBar from './components/Navbar.vue';
 </script>
 
 <style></style>

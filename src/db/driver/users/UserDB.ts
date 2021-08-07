@@ -6,6 +6,8 @@ export class UserDB extends DBDriver<UserDBEntry> {
 
   static shutdown = UserDB.db.shutdown;
 
+  static user = UserDB.db.select;
+
   static userExists = (providerId: string) => UserDB.db.selectWhere(user => user.authInfo.providerId === providerId) !== undefined;
 
   static userAuthorized = (userId: string) => {

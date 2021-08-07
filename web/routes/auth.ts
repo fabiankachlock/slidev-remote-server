@@ -4,11 +4,12 @@ import Logout from '../pages/auth/Logout.vue';
 
 export const AuthRoutes: RouteRecordRaw[] = [
   {
-    path: '/auth/ogin',
-    component: Login
+    path: '/login',
+    redirect: '/auth/login/github'
+    // component: Login
   },
   {
-    path: '/auth/logout',
+    path: '/logout',
     component: Logout
   }
 ];

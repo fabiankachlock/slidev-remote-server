@@ -37,3 +37,5 @@ ApiRouter.post('/upload', fileUpload.array('upload-files'), (req, res) => {
       });
   }
 });
+
+import './api/user';
