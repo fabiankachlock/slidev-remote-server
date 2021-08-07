@@ -46,7 +46,7 @@ for (const authProvider of AuthProviders) {
       req.session.user.provider = authProvider.name;
       req.session.user.internalId = internalId;
     }
-    res.redirect('/dashboard');
+    res.redirect('/login/callback');
   });
 }
 

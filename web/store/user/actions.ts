@@ -5,8 +5,7 @@ import { UserAction, UserActionType, UserModuleState, UserMutationType } from '.
 
 export const userActions: ActionTree<UserModuleState, RootState> & UserAction = {
   async [UserActionType.Login]({ commit }) {
-    await fetch('auth/login/github');
-    const userInfo: ServerUserInfoResponse = await fetch('api/user/info').then(res => res.json());
+    const userInfo: ServerUserInfoResponse = await fetch('/api/user/info').then(res => res.json());
     commit(UserMutationType.ChangeEmail, userInfo.email);
     commit(UserMutationType.ChangeLogInStatus, userInfo.loggedIn);
   },

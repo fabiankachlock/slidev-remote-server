@@ -6,8 +6,12 @@ import { userActions } from './actions';
 import { RootState } from '../type';
 
 export const UserModule: Module<UserModuleState, RootState> = {
+  state: {
+    loggedIn: false,
+    email: undefined
+  },
   getters: userGetters,
   mutations: userMutations,
   actions: userActions,
-  namespaced: true
+  namespaced: false // TODO!
 };

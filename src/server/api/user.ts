@@ -12,7 +12,7 @@ ApiRouter.get('/user/info', async (req, res) => {
     console.log(info);
     if (info) {
       response = {
-        loggedIn: true,
+        loggedIn: info.loggedIn,
         email: info.email
       };
     }

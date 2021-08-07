@@ -13,7 +13,7 @@
       </div>
       <div class="action">
         <button type="button" class="btn btn-primary dark-text">
-          <router-link to="/login">Login</router-link>
+          <a href="/auth/login/github">Login</a>
         </button>
       </div>
       <div class="action">
@@ -25,13 +25,7 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'LadingPage'
-});
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
 .action {

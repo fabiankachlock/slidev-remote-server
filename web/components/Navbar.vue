@@ -8,22 +8,19 @@
       <!-- Github -->
       <!-- Darkmode -->
       <!-- Menu -->
-      <p v-if="userData?.loggedIn">Test</p>
+      <p v-if="isLoggededIn">Test</p>
     </div>
   </header>
 </template>
 
-<script setup lang="ts">
-import { onMounted, ref } from '@vue/runtime-core';
-import type { ServerUserInfoResponse } from '../../types/server';
-const userData = ref(undefined as ServerUserInfoResponse | undefined);
+<script lang="ts">
+import { computed } from '@vue/runtime-core';
+import { UserActionType } from '../store/user/type';
+import { useStore } from '../store/useStore';
+</script>
 
-onMounted(async () => {
-  const response: ServerUserInfoResponse = await fetch('/api/user/info').then(res => res.json());
-  console.log(response);
-  userData.value = {
-    loggedIn: response.loggedIn,
-    email: response.email
-  };
-});
+<script setup lang="ts">
+const store = useStore();
+const isLoggededIn = computed(() => store.state.user.loggedIn);
+store.dispatch(UserActionType.Login, undefined);
 </script>

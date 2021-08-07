@@ -15,8 +15,8 @@ export type UserGetter = {
 
 // Mutations
 export enum UserMutationType {
-  ChangeLogInStatus = 'user/CHANGE_LOGIN_STATUS',
-  ChangeEmail = 'user/CHANGE_EMAIL'
+  ChangeLogInStatus = 'USER_CHANGE_LOGIN_STATUS',
+  ChangeEmail = 'USER_CHANGE_EMAIL'
 }
 
 export type UserMutation = {
@@ -26,8 +26,8 @@ export type UserMutation = {
 
 // Actions
 export enum UserActionType {
-  Login = 'user/LOGIN',
-  Logout = 'user/LOGOUT'
+  Login = 'USER_LOGIN',
+  Logout = 'USER_LOGOUT'
 }
 
 export type UserAction = {
