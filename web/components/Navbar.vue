@@ -1,26 +1,25 @@
 <template>
   <header class="border-0 border-b-2 border-gray-500">
-    <div>
-      <!-- Logo -->
-      <h1>slidev-remote-server</h1>
-    </div>
-    <div>
-      <!-- Github -->
-      <!-- Darkmode -->
-      <!-- Menu -->
-      <p v-if="isLoggededIn">Test</p>
+    <div class="w-full my-2 flex justify-between align-middle">
+      <div class="mx-2">
+        <NavbarLogo />
+      </div>
+      <div class="mx-2">
+        <NavbarActions />
+      </div>
     </div>
   </header>
 </template>
 
-<script lang="ts">
-import { computed } from '@vue/runtime-core';
+<script setup lang="ts">
+import { onMounted } from '@vue/runtime-core';
 import { UserActionType } from '../store/user/type';
 import { useStore } from '../store/useStore';
-</script>
+import NavbarLogo from './NavbarLogo.vue';
+import NavbarActions from './NavbarActions.vue';
 
-<script setup lang="ts">
 const store = useStore();
-const isLoggededIn = computed(() => store.state.user.loggedIn);
-store.dispatch(UserActionType.Login, undefined);
+onMounted(() => {
+  store.dispatch(UserActionType.Login, undefined);
+});
 </script>
