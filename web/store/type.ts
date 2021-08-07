@@ -1,3 +1,5 @@
-export type StateType = {
-  test: string;
+import { UserModuleState } from './user/type';
+
+export type RootState = {
+  user: UserModuleState;
 };

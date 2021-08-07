@@ -1,7 +1,6 @@
-import { Store, useStore as baseUseStore } from 'vuex';
-import { key } from './index.js';
-import { StateType } from './type.js';
+import { useStore as useBaseUseStore } from 'vuex';
+import { key, StoreType } from './index.js';
 
-export function useStore(): Store<StateType> {
-  return baseUseStore(key);
+export function useStore(): StoreType {
+  return useBaseUseStore(key);
 }
