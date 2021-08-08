@@ -10,10 +10,14 @@ module.exports = {
           dark: '#3AB9D4',
         },
         'light-bg': {
+          light: '#e4e4e4',
           DEFAULT: '#ddd',
+          dark: '#d4d4d4',
         },
         'dark-bg': {
+          light: '#2b2b2b',
           DEFAULT: '#222',
+          dark: '#1b1b1b',
         }
       },
       fontFamily: {
