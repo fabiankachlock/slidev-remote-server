@@ -1,8 +1,9 @@
 import { InjectionKey } from 'vue';
 import { createStore, Store as VuexStore, createLogger } from 'vuex';
+import { DashboardModule } from './dashboard/module';
 import { RootState } from './type.js';
 import { UserModule } from './user/module';
-import { UserModuleCommit, UserModuleStore, UserMutation } from './user/type.js';
+import { UserModuleStore } from './user/type';
 
 // define injection key
 export const key: InjectionKey<VuexStore<RootState>> = Symbol();
@@ -10,7 +11,8 @@ export const key: InjectionKey<VuexStore<RootState>> = Symbol();
 export const Store = createStore<RootState>({
   plugins: process.env.NODE_ENV !== 'production' ? [createLogger()] : [],
   modules: {
-    user: UserModule
+    user: UserModule,
+    dashboard: DashboardModule
   }
 });
 
