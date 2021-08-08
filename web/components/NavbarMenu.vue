@@ -24,18 +24,16 @@
       "
       style="border-width: 0.5px; min-width: 10rem"
     >
-      <a href="https://github.com/fabiankachlock/slidev-remote-server" target="_blank" class="nav-link secondary-text link-extern">
-        Github <icon-bytesize-external class="icon" />
-      </a>
-      <a href="https://sli.dev" target="_blank" class="nav-link secondary-text link-extern"> Slidev <icon-bytesize-external class="icon" /> </a>
+      <NavbarMenuItem display-name="Github" link="https://github.com/fabiankachlock/slidev-remote-server" is-external />
+      <NavbarMenuItem display-name="Slidev" link="https://sli.dev" is-external />
       <div class="divider"></div>
       <div v-if="!isLoggededIn">
-        <a href="/auth/login/github" class="nav-link secondary-text"> Login </a>
+        <NavbarMenuItem display-name="Login" link="/auth/login/github" />
       </div>
       <div v-if="isLoggededIn">
-        <router-link to="/dashboard" class="nav-link secondary-text"> Dashboard </router-link>
+        <NavbarMenuItem display-name="Dashboard" link="/dashboard" use-router />
         <div class="divider"></div>
-        <a href="/auth/logout" class="nav-link secondary-text"> Logout </a>
+        <NavbarMenuItem display-name="Logout" link="/auth/logout" />
       </div>
     </div>
   </div>
@@ -44,6 +42,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useStore } from '../store/useStore';
+import NavbarMenuItem from './NavbarMenuItem.vue';
 
 const store = useStore();
 const isLoggededIn = computed(() => store.state.user.loggedIn);
@@ -52,18 +51,7 @@ const toggleMenu = () => (menuOpen.value = menuOpen.value ? false : true);
 </script>
 
 <style scoped>
-.nav-link {
-  @apply text-base py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent transform ease-linear transition-transform hover:translate-x-1;
-}
-
 .divider {
   @apply h-0 my-2 border border-solid border-t-0 border-gray-800 dark:border-gray-100 opacity-50;
-}
-
-.link-extern {
-  @apply flex content-center justify-start items-start;
-}
-.link-extern .icon {
-  @apply ml-2 text-xs;
 }
 </style>
