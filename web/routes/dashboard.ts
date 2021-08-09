@@ -18,7 +18,7 @@ export const DashboardRoutes: RouteRecordRaw[] = [
         component: DashboardUpload
       },
       {
-        path: 'detail',
+        path: 'detail/:id',
         component: DashboardDetail
       }
     ]
