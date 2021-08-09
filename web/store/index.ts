@@ -1,6 +1,7 @@
 import { InjectionKey } from 'vue';
 import { createStore, Store as VuexStore, createLogger } from 'vuex';
 import { DashboardModule } from './dashboard/module';
+import { DashboardModuleStore } from './dashboard/type';
 import { RootState } from './type.js';
 import { UserModule } from './user/module';
 import { UserModuleStore } from './user/type';
@@ -16,4 +17,4 @@ export const Store = createStore<RootState>({
   }
 });
 
-export type StoreType = UserModuleStore<Pick<RootState, 'user'>>;
+export type StoreType = UserModuleStore<Pick<RootState, 'user'>> & DashboardModuleStore<Pick<RootState, 'dashboard'>>;
