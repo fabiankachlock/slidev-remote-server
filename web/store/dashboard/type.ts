@@ -18,13 +18,13 @@ export type DashboardGetter = {
 export enum DashboardMutationType {
   ChangeEditMode = 'DASHBOARD_CHANGE_EDIT_MODE',
   AddSlidePreview = 'DASHBOARD_ADD_PREVIEW',
-  DeleteSlidevPreview = 'DASHBOARD_DELETE_PREVIEW'
+  DeleteSlidePreview = 'DASHBOARD_DELETE_PREVIEW'
 }
 
 export type DashboardMutation = {
   [DashboardMutationType.ChangeEditMode](state: DashboardModuleState, isActive: boolean): void;
   [DashboardMutationType.AddSlidePreview](state: DashboardModuleState, preview: UserSlidesPreview): void;
-  [DashboardMutationType.DeleteSlidevPreview](state: DashboardModuleState, preview: UserSlidesPreview): void;
+  [DashboardMutationType.DeleteSlidePreview](state: DashboardModuleState, preview: UserSlidesPreview): void;
 };
 
 // Actions

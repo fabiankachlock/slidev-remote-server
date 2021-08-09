@@ -9,7 +9,7 @@ export const dashboardMutations: MutationTree<DashboardModuleState> & DashboardM
   [DashboardMutationType.AddSlidePreview](state: DashboardModuleState, preview: UserSlidesPreview) {
     state.slidePreviews.push(preview);
   },
-  [DashboardMutationType.DeleteSlidevPreview](state: DashboardModuleState, preview: UserSlidesPreview) {
+  [DashboardMutationType.DeleteSlidePreview](state: DashboardModuleState, preview: UserSlidesPreview) {
     state.slidePreviews = state.slidePreviews.filter(p => p !== preview);
   }
 };

@@ -17,7 +17,7 @@ export const dashboardActions: ActionTree<DashboardModuleState, RootState> & Das
   },
   [DashboardActionType.ResetPreviews]({ commit, state }) {
     for (const preview of state.slidePreviews) {
-      commit(DashboardMutationType.DeleteSlidevPreview, preview);
+      commit(DashboardMutationType.DeleteSlidePreview, preview);
     }
   }
 };
