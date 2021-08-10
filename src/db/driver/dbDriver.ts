@@ -61,7 +61,7 @@ export class DBDriver<T extends DBData> {
 
   protected update = (id: string, object: T): boolean => {
     if (id in this.data) {
-      this.db.writeBatch({ [id]: object });
+      this.db.write(id, object);
       this.data = this.db.read();
       return true;
     }
@@ -90,7 +90,41 @@ export class DBDriver<T extends DBData> {
     this.data = this.db.read();
   };
 
-  protected applyMutation = <B>(mutation: DBMutation<T, B>) => {
+  protected mutate = (id: string, mutation: DBMutation<T, T>): boolean => {
+    if (id in this.data) {
+      const object = this.data[id];
+      this.db.write(id, mutation(object));
+      this.data = this.db.read();
+      return true;
+    }
+    return false;
+  };
+
+  protected mutateWhere = (pred: WherePredicate<T>, mutation: DBMutation<T, T>): boolean => {
+    for (const [key, value] of Object.entries(this.data)) {
+      if (pred(value)) {
+        const object = this.data[key];
+        this.update(key, mutation(object));
+        this.data = this.db.read();
+        return true;
+      }
+    }
+    return false;
+  };
+
+  protected mutateAllWhere = (pred: WherePredicate<T>, mutation: DBMutation<T, T>) => {
+    const updates: DBData = {};
+    for (const [key, value] of Object.entries(this.data)) {
+      if (pred(value)) {
+        const object = this.data[key];
+        updates[key] = mutation(object);
+      }
+    }
+    this.db.writeBatch(updates);
+    this.data = this.db.read();
+  };
+
+  protected mutateAll = <B>(mutation: DBMutation<T, B>) => {
     const updates: DBData = {};
     for (const [key, value] of Object.entries(this.data)) {
       updates[key] = mutation(value);
@@ -100,7 +134,7 @@ export class DBDriver<T extends DBData> {
     DBJanitor.instance.cleanUp(this.db);
   };
 
-  protected migrate = this.applyMutation;
+  protected migrate = this.mutateAll;
 
   protected delete = (id: string) => {
     this.db.write(id, undefined);

@@ -1,21 +1,26 @@
 import fs from 'fs-extra';
 import path from 'path';
-import { v4 as uuid } from 'uuid';
+import { FileRegistry } from '../registry/FileRegistry';
 import { uploadDir } from './constants';
+// import sanitize from 'sanitize-filename';
 
 export const FileUploader = {
-  upload(files: Express.Multer.File[]) {
-    const id = uuid();
+  prepare: () => {
+    if (!fs.existsSync(path.join(uploadDir))) {
+      fs.mkdirSync(path.join(uploadDir));
+    }
+  },
 
-    fs.mkdir(path.join(uploadDir, id));
+  upload: async (files: Express.Multer.File[], userId: string) => {
+    const id = FileRegistry.registerUpload(userId);
+    await FileUploader.prepareUpload(id);
 
     for (const file of files) {
-      // console.log('Writing POSTed data :', file.originalname);
-      // import sanitize from 'sanitize-filename';
-      //var sanitized_filename = sanitize(file.originalname);
+      // var sanitized_filename = sanitize(file.originalname);
       const fileName = path.join(uploadDir, id, file.originalname);
-
       return fs.writeFile(fileName, file.buffer);
     }
-  }
+  },
+
+  prepareUpload: async (id: string) => fs.mkdir(path.join(uploadDir, id))
 };

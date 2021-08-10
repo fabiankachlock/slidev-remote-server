@@ -7,4 +7,5 @@ export type UserDBEntry = {
     providerId: string;
     activeToken: string;
   };
+  slides: string[];
 };

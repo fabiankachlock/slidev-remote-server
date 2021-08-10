@@ -1,9 +1,12 @@
 /// <reference path="../../express-session.d.ts" />
-import { ApiRouter } from '../api';
+import express from 'express';
 import { ServerUserInfoResponse } from '../../../types/server';
 import { UserDB } from '../../db/driver/users/UserDB';
+import { isAuthenticated } from '../auth';
 
-ApiRouter.get('/user/info', async (req, res) => {
+export const UserApi = express.Router();
+
+UserApi.get('/info', async (req, res) => {
   let response: ServerUserInfoResponse | undefined = undefined;
   const id = req.session.user?.internalId;
 
@@ -27,3 +30,9 @@ ApiRouter.get('/user/info', async (req, res) => {
   console.log(response);
   res.json(response);
 });
+
+UserApi.get('/slides/previews', isAuthenticated, async (req, res) => {});
+
+UserApi.get('/slides/:id', isAuthenticated, async (req, res) => {});
+
+UserApi.delete('/slides/:id', isAuthenticated, async (req, res) => {});

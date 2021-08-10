@@ -24,7 +24,8 @@ export class UserDB extends DBDriver<UserDBEntry> {
         provider,
         providerId,
         activeToken: ''
-      }
+      },
+      slides: []
     };
     const id = UserDB.db.create(data);
     UserDB.db.update(id, {
@@ -60,4 +61,17 @@ export class UserDB extends DBDriver<UserDBEntry> {
       });
     }
   };
+
+  static withUser = (userId: string) => ({
+    registerSlide: (id: string) =>
+      UserDB.db.mutate(userId, data => ({
+        ...data,
+        slides: [...data.slides, id]
+      })),
+    deleteSlide: (id: string) =>
+      UserDB.db.mutate(userId, data => ({
+        ...data,
+        slides: data.slides.filter(sid => sid !== id)
+      }))
+  });
 }
