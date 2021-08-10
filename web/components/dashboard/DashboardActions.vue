@@ -4,13 +4,13 @@
     <div class="relative flex flex-row md:flex-col">
       <router-link
         to="/dashboard/upload"
-        class="bg-light-bg-dark dark:bg-dark-bg-dark text-base text-center primary-text rounded-md px-5 py-2 m-2 hover:text-primary"
+        class="bg-light-bg-dark dark:bg-dark-bg-dark text-base text-center primary-text rounded-md px-5 py-2 m-2 hover:text-primary-dark"
         >Upload New</router-link
       >
       <button
         @click="manageSlides"
         :class="{
-          'bg-light-bg-dark dark:bg-dark-bg-dark text-base text-center rounded-md px-5 py-2 m-2 hover:text-primary': true,
+          'bg-light-bg-dark dark:bg-dark-bg-dark text-base text-center rounded-md px-5 py-2 m-2 hover:text-primary-dark': true,
           'text-primary': isEditModeActive,
           'primary-text': !isEditModeActive
         }"

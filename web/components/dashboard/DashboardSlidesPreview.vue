@@ -3,7 +3,7 @@
     @click="open"
     class="relative bg-light-bg-dark dark:bg-dark-bg-dark rounded-lg p-4 my-2 border border-transparent hover:border-primary-light cursor-pointer"
   >
-    <h3 class="text-xl text-primary-dark">{{ preview.title }}</h3>
+    <h3 class="text-xl text-primary">{{ preview.title }}</h3>
     <div v-show="isEditModeActive" class="absolute top-2 right-2 rounded bg-light-bg dark:bg-dark-bg p-1">
       <div @click.stop="deleteSlide" class="transform hover:scale-110 transition-transform duration-200">
         <icon-ic-round-delete-forever class="text-xl text-red-600" />

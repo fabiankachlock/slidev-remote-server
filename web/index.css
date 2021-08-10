@@ -27,15 +27,15 @@
 	}
 
 	body {
-		@apply bg-light-bg dark:bg-dark-bg text-gray-800 dark:text-gray-300;
+		@apply bg-light-bg dark:bg-dark-bg text-gray-900 dark:text-gray-300;
 	}
 
 	.primary-text {
-		@apply text-gray-800 dark:text-gray-300;
+		@apply text-gray-900 dark:text-gray-300;
 	}
 
 	.secondary-text {
-		@apply text-gray-600 dark:text-gray-500;
+		@apply text-gray-800 dark:text-gray-400;
 	}
 
 	.dark-text {
