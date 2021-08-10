@@ -15,7 +15,7 @@ const resolveFiles = async (req: Express.Request): Promise<Express.Multer.File[]
 
       if (Array.isArray(files)) {
         allFiles.push(...files);
-      } else {
+      } else if (files) {
         for (const [, file] of Object.entries(files)) {
           if (Array.isArray(file)) {
             allFiles.push(...file);

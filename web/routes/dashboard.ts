@@ -8,18 +8,22 @@ export const DashboardRoutes: RouteRecordRaw[] = [
   {
     path: '/dashboard',
     component: Dashboard,
+    meta: { requiresAuth: true },
     children: [
       {
         path: '',
-        component: DashboardMainContent
+        component: DashboardMainContent,
+        meta: { requiresAuth: true }
       },
       {
         path: 'upload',
-        component: DashboardUpload
+        component: DashboardUpload,
+        meta: { requiresAuth: true }
       },
       {
         path: 'detail/:id',
-        component: DashboardDetail
+        component: DashboardDetail,
+        meta: { requiresAuth: true }
       }
     ]
   }

@@ -4,7 +4,7 @@ import fs from 'fs-extra';
 import { createCoverUrl, uploadDir } from '../upload/constants';
 
 export const FileRegistry = {
-  registerUpload: (owner: string) => {
+  registerUpload: (owner: string): string => {
     const id = SlidesDB.createUpload(owner, Date.now());
     if (FileRegistry.folderFree(owner, id)) {
       const folderPath = path.join(uploadDir, owner, id);
@@ -12,7 +12,7 @@ export const FileRegistry = {
       return folderPath;
     } else {
       SlidesDB.delete(id);
-      FileRegistry.registerUpload(owner);
+      return FileRegistry.registerUpload(owner);
     }
   },
 

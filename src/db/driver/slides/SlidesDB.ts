@@ -30,7 +30,8 @@ export class SlidesDB extends DBDriver<SlidesDBEntry> {
     const slides: SlidesDBEntry[] = [];
     if (user) {
       for (const slideId of user.slides) {
-        slides.push(SlidesDB.db.select(slideId));
+        const data = SlidesDB.db.select(slideId);
+        data && slides.push(data);
       }
     }
     return slides;

@@ -9,7 +9,7 @@ import { UserModuleStore } from './user/type';
 // define injection key
 export const key: InjectionKey<VuexStore<RootState>> = Symbol();
 
-export const Store = createStore<RootState>({
+export const Store: StoreType = createStore<RootState>({
   plugins: process.env.NODE_ENV !== 'production' ? [createLogger()] : [],
   modules: {
     user: UserModule,
