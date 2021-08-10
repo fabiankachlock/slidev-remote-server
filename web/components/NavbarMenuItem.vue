@@ -1,8 +1,8 @@
 <template>
-  <a v-if="!useRouter" :href="link" target="_blank" class="nav-link secondary-text link-extern">
+  <a v-if="!useRouter" :href="link" :target="isExternal ? '_blank' : ''" :class="{ 'nav-link secondary-text': true, 'link-extern': isExternal }">
     {{ displayName }} <icon-bytesize-external v-if="isExternal" class="icon" />
   </a>
-  <router-link v-if="useRouter" :to="link" class="nav-link secondary-text">
+  <router-link v-if="useRouter" :to="link" :class="{ 'nav-link secondary-text': true, 'link-extern': isExternal }">
     {{ displayName }} <icon-bytesize-external v-if="isExternal" class="icon" />
   </router-link>
 </template>
