@@ -25,6 +25,8 @@ export class SlidesDB extends DBDriver<SlidesDBEntry> {
     return id;
   };
 
+  static getSlide = SlidesDB.db.select;
+
   static slidesForUser = (userId: string) => {
     const user = UserDB.user(userId);
     const slides: SlidesDBEntry[] = [];

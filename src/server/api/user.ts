@@ -42,6 +42,14 @@ UserApi.get('/slides/previews', isAuthenticated, async (req, res) => {
   res.sendStatus(401);
 });
 
-UserApi.get('/slides/:id', isAuthenticated, async (req, res) => {});
+UserApi.get('/slides/:id', isAuthenticated, async (req, res) => {
+  const data = readSession(req);
+  if (data) {
+    const slide = SlidesDB.getSlide(req.params.id);
+    console.log(slide);
+    if ((slide && slide.owner === data.internalId) || !slide) return res.json(slide);
+  }
+  res.sendStatus(401);
+});
 
 UserApi.delete('/slides/:id', isAuthenticated, async (req, res) => {});
