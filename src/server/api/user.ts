@@ -1,8 +1,10 @@
 /// <reference path="../../express-session.d.ts" />
 import express from 'express';
 import { ServerUserInfoResponse } from '../../../types/server';
+import { SlidesDB } from '../../db/driver/slides/SlidesDB';
 import { UserDB } from '../../db/driver/users/UserDB';
 import { isAuthenticated } from '../auth';
+import { readSession } from '../auth/utils';
 
 export const UserApi = express.Router();
 
@@ -31,7 +33,14 @@ UserApi.get('/info', async (req, res) => {
   res.json(response);
 });
 
-UserApi.get('/slides/previews', isAuthenticated, async (req, res) => {});
+UserApi.get('/slides/previews', isAuthenticated, async (req, res) => {
+  const data = readSession(req);
+  if (data) {
+    const slides = SlidesDB.getPreviews(data.internalId);
+    return res.json(slides);
+  }
+  res.sendStatus(401);
+});
 
 UserApi.get('/slides/:id', isAuthenticated, async (req, res) => {});
 

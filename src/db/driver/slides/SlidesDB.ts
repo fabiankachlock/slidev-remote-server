@@ -38,6 +38,7 @@ export class SlidesDB extends DBDriver<SlidesDBEntry> {
   };
 
   static getPreviews = (userId: string) => {
+    console.log(userId);
     const slides = SlidesDB.slidesForUser(userId);
     return slides.map(slide => ({
       id: slide.id,
