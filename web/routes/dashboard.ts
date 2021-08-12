@@ -23,7 +23,7 @@ export const DashboardRoutes: RouteRecordRaw[] = [
       {
         path: 'detail/:id',
         component: DashboardDetail,
-        meta: { requiresAuth: true }
+        meta: { requiresAuth: false }
       }
     ]
   }
