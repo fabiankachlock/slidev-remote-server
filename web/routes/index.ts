@@ -5,6 +5,7 @@ import Error401 from '../pages/error/401.vue';
 import Landig from '../pages/LandingPage.vue';
 import { DashboardRoutes } from './dashboard';
 import { Store } from '../store';
+import { queryAuthStatus } from '../serverApi/user';
 
 export const Routes: RouteRecordRaw[] = [
   {
@@ -28,10 +29,18 @@ export const Router = createRouter({
   routes: Routes
 });
 
-Router.beforeEach((to, from, next) => {
+Router.beforeEach(async (to, from, next) => {
   if (to.meta.requiresAuth) {
-    if (Store.getters.userLoggedIn) {
+    if (Store.getters.userLoggedIn && Store.getters.authStatusLoaded) {
       next();
+    } else if (!Store.getters.authStatusLoaded) {
+      console.log('query status');
+      const status = await queryAuthStatus();
+      if (status.loggedIn) {
+        next();
+      } else {
+        next('/notAuthenticated');
+      }
     } else {
       next('/notAuthenticated');
     }

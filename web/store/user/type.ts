@@ -5,23 +5,27 @@ import { RootState } from '../type';
 export type UserModuleState = {
   loggedIn: boolean;
   email: string | undefined;
+  loaded: boolean;
 };
 
 // getters
 export type UserGetter = {
   userLoggedIn(state: UserModuleState): boolean;
   userEmail(state: UserModuleState): string | undefined;
+  authStatusLoaded(state: UserModuleState): boolean;
 };
 
 // Mutations
 export enum UserMutationType {
   ChangeLogInStatus = 'USER_CHANGE_LOGIN_STATUS',
-  ChangeEmail = 'USER_CHANGE_EMAIL'
+  ChangeEmail = 'USER_CHANGE_EMAIL',
+  ChangeAuthStatusLoaded = 'USER_CHANGE_AUTH_STATUS_LOADED'
 }
 
 export type UserMutation = {
   [UserMutationType.ChangeLogInStatus](state: UserModuleState, loggedIn: boolean): void;
   [UserMutationType.ChangeEmail](state: UserModuleState, email: string | undefined): void;
+  [UserMutationType.ChangeAuthStatusLoaded](state: UserModuleState, loaded: boolean): void;
 };
 
 // Actions

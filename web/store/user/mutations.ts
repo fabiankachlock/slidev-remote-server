@@ -7,5 +7,8 @@ export const userMutations: MutationTree<UserModuleState> & UserMutation = {
   },
   [UserMutationType.ChangeEmail](state: UserModuleState, email: string | undefined) {
     state.email = email;
+  },
+  [UserMutationType.ChangeAuthStatusLoaded](state: UserModuleState, loaded: boolean) {
+    state.loaded = loaded;
   }
 };

@@ -8,7 +8,8 @@ import { RootState } from '../type';
 export const UserModule: Module<UserModuleState, RootState> = {
   state: {
     loggedIn: false,
-    email: undefined
+    email: undefined,
+    loaded: false
   },
   getters: userGetters,
   mutations: userMutations,

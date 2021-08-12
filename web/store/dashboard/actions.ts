@@ -1,5 +1,6 @@
 import { ActionTree } from 'vuex';
 import { ServerUserSlidesResponse } from '../../../types/server';
+import { queryPreviews } from '../../serverApi/slides';
 import { RootState } from '../type';
 import { DashboardAction, DashboardActionType, DashboardModuleState, DashboardMutationType } from './type';
 
@@ -7,7 +8,7 @@ export const dashboardActions: ActionTree<DashboardModuleState, RootState> & Das
   async [DashboardActionType.LoadPreviews]({ commit, dispatch }) {
     dispatch(DashboardActionType.ResetPreviews);
 
-    const slides = await fetch('/api/user/slides/previews').then(res => res.json() as Promise<ServerUserSlidesResponse>);
+    const slides = await queryPreviews();
     console.log(slides);
     for (const slide of slides) {
       commit(DashboardMutationType.AddSlidePreview, {
