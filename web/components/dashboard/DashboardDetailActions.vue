@@ -1,6 +1,6 @@
 <template>
   <h4 class="text-xl primary-text my-2">Actions</h4>
-  <div class="relative rounded w-full bg-light-bg-dark dark:bg-dark-bg-dark p-2 flex justify-center">
+  <div class="relative rounded w-full bg-light-bg-dark dark:bg-dark-bg-dark p-2 flex justify-center flex-wrap">
     <button class="btn">
       <icon-ic-outline-smart-display class="secondary-text icon" />
       <span> Show </span>
@@ -24,7 +24,7 @@
 
 <style scoped>
 .btn {
-  @apply mx-2 px-3 py-1 bg-light-bg-light dark:bg-dark-bg-light rounded text-lg transform hover:scale-110 transition-transform duration-100 flex flex-nowrap content-center;
+  @apply m-2 px-3 py-1 bg-light-bg-light dark:bg-dark-bg-light rounded text-lg transform hover:scale-110 transition-transform duration-100 flex flex-nowrap content-center;
 }
 
 .icon {

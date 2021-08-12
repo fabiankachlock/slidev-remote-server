@@ -1,5 +1,5 @@
 <template>
-  <header class="border-0 border-b-2 border-gray-500">
+  <header class="fixed border-0 border-b-2 border-gray-500 top-0 left-0 right-0 z-20 bg-light-bg dark:bg-dark-bg">
     <div class="w-full my-2 flex justify-between align-middle">
       <div class="mx-2">
         <NavbarLogo />
