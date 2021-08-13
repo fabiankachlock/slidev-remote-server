@@ -8,6 +8,7 @@ export class PortFinder {
   private static allUsed: boolean = false;
   private static hint: number = PortFinder.minPort;
   private static freePorts: number[] = [];
+  private static reserved: Record<number, boolean> = {};
 
   public static getFree = async (): Promise<PortInstance | undefined> => {
     if (PortFinder.allUsed) return undefined;
@@ -49,6 +50,7 @@ export class PortFinder {
   private static createFreePortCallback = (port: number) => () => {
     PortFinder.freePorts.push(port);
     PortFinder.allUsed = false;
+    delete PortFinder.reserved[port];
   };
 
   private static findCachedPort = (): Promise<number> => {
@@ -72,7 +74,7 @@ export class PortFinder {
 
       PortFinder.freePorts = newPorts;
 
-      if (foundPort && freePort > 0) {
+      if (foundPort && freePort > 0 && PortFinder.reserved[freePort] !== true) {
         return resolve(freePort);
       }
       return reject('no chached port free');
@@ -84,7 +86,7 @@ export class PortFinder {
       let port = start;
       while (port <= max) {
         const isFree = await PortFinder.testPort(port);
-        if (isFree) {
+        if (isFree && PortFinder.reserved[port] !== true) {
           return resolve(port);
         }
         port += 1;
@@ -114,5 +116,16 @@ export class PortFinder {
 
       server.listen(port);
     });
+  };
+
+  public static reseve = async (port: number): Promise<boolean> => {
+    const isFree = await PortFinder.testPort(port);
+    const canBeUsed = isFree && PortFinder.reserved[port] !== true;
+
+    if (canBeUsed) {
+      PortFinder.reserved[port] = true;
+    }
+
+    return canBeUsed;
   };
 }
