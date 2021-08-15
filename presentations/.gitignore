@@ -1,0 +1,12 @@
+node_modules
+.DS_Store
+dist
+*.local
+index.html
+.remote-assets
+components.d.ts
+netlify.toml
+README.md
+vercel.json
+user-data
+components

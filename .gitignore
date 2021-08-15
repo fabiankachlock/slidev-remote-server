@@ -7,7 +7,3 @@ uploads
 .env
 *.db
 .vscode
-presentations/**
-!presentations/package.json
-!presentations/.npmrc
-!presentations/yarn.lock
